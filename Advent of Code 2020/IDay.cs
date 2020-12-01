@@ -1,6 +1,6 @@
 namespace Advent_of_Code_2020
 {
-    public interface Day
+    public interface IDay
     {
         void SolveProblem1();
 

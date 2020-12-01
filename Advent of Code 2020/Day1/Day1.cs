@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Advent_of_Code_2020.Day1
 {
-    public class Day1 : Day
+    public class Day1 : IDay
     {
         private static IEnumerable<int[]> SumIndicesEnumerable(int amountOfValues, int amountOfSums)
         {
