@@ -61,7 +61,6 @@ namespace Advent_of_Code_2020.Day2
         public int FirstNumber { get; set; }
         public int SecondNumber { get; set; }
         public char Character { get; set; }
-        
         public string Password { get; set; }
 
         public bool FulfillsPolicy1()
@@ -75,9 +74,7 @@ namespace Advent_of_Code_2020.Day2
         
         public bool FulfillsPolicy2()
         {
-            var passwordAsChars = Password.ToCharArray();
-
-            return passwordAsChars[FirstNumber - 1] == Character ^ passwordAsChars[SecondNumber - 1] == Character;
+            return Password[FirstNumber - 1] == Character ^ Password[SecondNumber - 1] == Character;
         }
     }
 }
