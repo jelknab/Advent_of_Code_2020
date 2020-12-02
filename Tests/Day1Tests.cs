@@ -7,15 +7,8 @@ using Xunit;
 
 namespace Tests
 {
-    public class Dag1Test
+    public class Day1Tests
     {
-        private readonly Day1 _dag;
-
-        public Dag1Test()
-        {
-            _dag = new Day1();
-        }
-
         [Fact]
         private void TestFindValuesThatSum2020()
         {
