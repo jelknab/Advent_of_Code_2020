@@ -9,14 +9,14 @@ namespace Advent_of_Code_2020.Day2
 {
     public class Day2 : IDay
     {
-        public static readonly Regex PolicyPattern = new Regex("(?<min>\\d+)-(?<max>\\d+)\\s(?<char>.):\\s(?<pass>.*)");
+        public static readonly Regex PolicyPattern = new Regex("(?<num1>\\d+)-(?<num2>\\d+)\\s(?<char>.):\\s(?<pass>.*)");
 
-        private static List<PasswordPolicy> ReadPasswordPolicies()
+        private static IEnumerable<PasswordPolicy> ReadPasswordPolicies()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "Advent_of_Code_2020.Day2.input.txt";
-
-            using var stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception("Input not read");
+            using var stream = Assembly
+                .GetExecutingAssembly()
+                .GetManifestResourceStream("Advent_of_Code_2020.Day2.input.txt") 
+                               ?? throw new Exception("Input not read");
             using var reader = new StreamReader(stream);
             
             var values = new List<PasswordPolicy>();
@@ -24,12 +24,11 @@ namespace Advent_of_Code_2020.Day2
             string line;
             while ((line = reader.ReadLine()) != null)
             {
-
                 var match = PolicyPattern.Match(line);
-                values.Add(new PasswordPolicy()
+                values.Add(new PasswordPolicy
                 {
-                    FirstNumber = int.Parse(match.Groups["min"].Value),
-                    SecondNumber = int.Parse(match.Groups["max"].Value),
+                    FirstNumber = int.Parse(match.Groups["num1"].Value),
+                    SecondNumber = int.Parse(match.Groups["num2"].Value),
                     Character = char.Parse(match.Groups["char"].Value),
                     Password = match.Groups["pass"].Value
                 });

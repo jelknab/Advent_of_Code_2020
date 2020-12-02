@@ -20,8 +20,8 @@ namespace Tests
         private void TestRegexPattern()
         {
             var match = Day2.PolicyPattern.Match("2-8 t: pncmjxlvckfbtrjh");
-            Assert.Equal("2", match.Groups["min"].Value);
-            Assert.Equal("8", match.Groups["max"].Value);
+            Assert.Equal("2", match.Groups["num1"].Value);
+            Assert.Equal("8", match.Groups["num2"].Value);
             Assert.Equal("t", match.Groups["char"].Value);
             Assert.Equal("pncmjxlvckfbtrjh", match.Groups["pass"].Value);
         }
