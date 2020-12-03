@@ -13,28 +13,18 @@ namespace Advent_of_Code_2020.Day2
 
         private static IEnumerable<PasswordPolicy> ReadPasswordPolicies()
         {
-            using var stream = Assembly
-                .GetExecutingAssembly()
-                .GetManifestResourceStream("Advent_of_Code_2020.Day2.input.txt") 
-                               ?? throw new Exception("Input not read");
-            using var reader = new StreamReader(stream);
-            
-            var values = new List<PasswordPolicy>();
-            
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                var match = PolicyPattern.Match(line);
-                values.Add(new PasswordPolicy
+            return new ResourceReader<PasswordPolicy>("Advent_of_Code_2020.Day2.input.txt")
+                .LineReader(line =>
                 {
-                    FirstNumber = int.Parse(match.Groups["num1"].Value),
-                    SecondNumber = int.Parse(match.Groups["num2"].Value),
-                    Character = char.Parse(match.Groups["char"].Value),
-                    Password = match.Groups["pass"].Value
+                    var match = PolicyPattern.Match(line);
+                    return new PasswordPolicy
+                    {
+                        FirstNumber = int.Parse(match.Groups["num1"].Value),
+                        SecondNumber = int.Parse(match.Groups["num2"].Value),
+                        Character = char.Parse(match.Groups["char"].Value),
+                        Password = match.Groups["pass"].Value
+                    };
                 });
-            }
-
-            return values;
         }
         
         public void SolveProblem1()
