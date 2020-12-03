@@ -17,4 +17,8 @@
       <ProjectReference Include="..\Advent of Code 2020\Advent of Code 2020.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Day3TestInput.txt" />
+    </ItemGroup>
+
 </Project>

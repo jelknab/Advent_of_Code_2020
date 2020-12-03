@@ -52,21 +52,9 @@ namespace Advent_of_Code_2020.Day1
 
         private static List<int> ReadInputToIntList()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "Advent_of_Code_2020.Day1.input.txt";
-
-            using var stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception("Input not read");
-            using var reader = new StreamReader(stream);
-            
-            var values = new List<int>();
-            
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                values.Add(int.Parse(line));
-            }
-
-            return values;
+            return new ResourceReader<int>("Advent_of_Code_2020.Day1.input.txt")
+                .LineReader(int.Parse)
+                .ToList();
         }
 
         public void SolveProblem1()

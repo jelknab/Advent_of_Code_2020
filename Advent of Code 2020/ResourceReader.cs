@@ -19,8 +19,8 @@ namespace Advent_of_Code_2020
         {
             using var stream = Assembly
                                    .GetExecutingAssembly()
-                                   .GetManifestResourceStream("Advent_of_Code_2020.Day2.input.txt") 
-                               ?? throw new Exception("Input not read");
+                                   .GetManifestResourceStream(resourceName) 
+                               ?? throw new Exception($"{resourceName} not read, forgot embedded resource?");
             using var reader = new StreamReader(stream);
             
             var values = new List<T>();
@@ -32,6 +32,17 @@ namespace Advent_of_Code_2020
             }
 
             return values;
-        } 
+        }
+
+        public T ReadFully(Func<string, T> parser)
+        {
+            using var stream = Assembly
+                                   .GetExecutingAssembly()
+                                   .GetManifestResourceStream(resourceName) 
+                               ?? throw new Exception($"{resourceName} not read");
+            using var reader = new StreamReader(stream);
+
+            return parser.Invoke(reader.ReadToEnd());
+        }
     }
 }
