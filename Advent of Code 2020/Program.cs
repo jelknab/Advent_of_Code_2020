@@ -6,7 +6,7 @@ namespace Advent_of_Code_2020
     {
         static void Main(string[] args)
         {
-            IDay day = new Day3.Day3();
+            IDay day = new Day4.Day4();
             try
             {
                 day.SolveProblem1();
