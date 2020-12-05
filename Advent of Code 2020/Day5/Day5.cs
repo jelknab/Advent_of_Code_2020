@@ -39,41 +39,31 @@ namespace Advent_of_Code_2020.Day5
         {
             var row = (int) Math.Floor(id / 8d);
             var col = id - row * 8;
-            
+
             return (row, col);
         }
 
         public static int FindIdOfOpenSeat(List<string> passes)
         {
-            var seatGrid = new bool[128,8];
-            
-            passes
-                .ForEach(pass =>
-                {
-                    var row = GetRowFromSeatString(pass);
-                    var col = GetColumnFromSeatString(pass);
-                    
-                    seatGrid[row, col] = true;
-                });
+            var seats = new bool[128 * 8];
 
-            for (var row = 0; row < 128; row++)
+            passes.ForEach(pass =>
             {
-                for (var col = 0; col < 8; col++)
-                {
-                    if (seatGrid[row, col]) continue;
-                    
-                    var id = GetSeatId(row, col);
-                    var next = ReverseSeatId(id + 1);
-                    var prev = ReverseSeatId(id - 1);
+                var id = GetSeatId(GetRowFromSeatString(pass), GetColumnFromSeatString(pass));
+                seats[id] = true;
+            });
 
-                    if (seatGrid[next.row, next.col] && seatGrid[prev.row, prev.col])
-                        return id;
+            for (var id = 8; id < 127 * 8; id++)
+            {
+                if (!seats[id] && seats[id - 1] && seats[id + 1])
+                {
+                    return id;
                 }
             }
 
-            return 0;
+            throw new Exception("Seat not found.");
         }
-        
+
         private static List<string> ReadBoardingPassesToList()
         {
             return new ResourceReader<string>("Advent_of_Code_2020.Day5.input.txt")
