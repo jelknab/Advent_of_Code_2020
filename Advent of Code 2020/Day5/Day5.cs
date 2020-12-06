@@ -30,10 +30,8 @@ namespace Advent_of_Code_2020.Day5
             return col;
         }
 
-        public static int GetSeatId(int row, int col)
-        {
-            return row * 8 + col;
-        }
+        public static int GetSeatId(int row, int col) => row * 8 + col;
+        
 
         public static (int row, int col) ReverseSeatId(int id)
         {

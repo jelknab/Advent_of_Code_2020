@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Advent_of_Code_2020.Day2;
 
 namespace Advent_of_Code_2020
@@ -30,6 +31,41 @@ namespace Advent_of_Code_2020
             {
                 values.Add(lineParser.Invoke(line));
             }
+
+            return values;
+        }
+
+        public IEnumerable<T> ParagraphReader(Func<string, T> paragraphParser)
+        {
+            using var stream = Assembly
+                                   .GetExecutingAssembly()
+                                   .GetManifestResourceStream(resourceName) 
+                               ?? throw new Exception($"{resourceName} not read, forgot embedded resource?");
+            using var reader = new StreamReader(stream);
+            
+            var values = new List<T>();
+
+            string line;
+            var paragraph = new StringBuilder();
+            
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (line.Trim() == "")
+                {
+                    paragraph.Remove(paragraph.Length - 1, 1);
+                    values.Add(paragraphParser.Invoke(paragraph.ToString()));
+                    paragraph.Clear();
+                    continue;
+                }
+
+                paragraph.Append(line);
+                paragraph.Append("\n");
+            }
+
+            if (paragraph.Length <= 0) return values;
+            
+            paragraph.Remove(paragraph.Length - 1, 1);
+            values.Add(paragraphParser.Invoke(paragraph.ToString()));
 
             return values;
         }
