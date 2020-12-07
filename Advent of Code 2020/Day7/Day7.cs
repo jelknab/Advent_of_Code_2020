@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace Advent_of_Code_2020.Day7
@@ -10,11 +9,11 @@ namespace Advent_of_Code_2020.Day7
     {
         private static readonly Regex BagRegex = new Regex("^(?<color>.+?)\\sbags\\scontain\\s(?:\\s*(?<amount>\\d+)\\s(?<child>.+?)\\sbags?[,|\\.])*$");
         
-        public static IEnumerable<ColorBag> ParseBagInput(string file)
+        public static IEnumerable<ColoredBag> ParseBagInput(string file)
         {
-            var bags = new Dictionary<string, ColorBag>();
+            var bags = new Dictionary<string, ColoredBag>();
 
-            new ResourceReader<ColorBag>(file)
+            new ResourceReader<ColoredBag>(file)
                 .LineReader(line =>
                 {
                     var match = BagRegex.Match(line);
@@ -22,7 +21,7 @@ namespace Advent_of_Code_2020.Day7
                     var color = match.Groups["color"].Value;
 
                     if (!bags.ContainsKey(color))
-                        bags.Add(color, new ColorBag() {Color = color});
+                        bags.Add(color, new ColoredBag() {Color = color});
 
                     for (var i = 0; i < match.Groups["child"].Captures.Count; i++)
                     {
@@ -30,7 +29,7 @@ namespace Advent_of_Code_2020.Day7
                         var childAmount = match.Groups["amount"].Captures[i].Value;
 
                         if (!bags.ContainsKey(childColor))
-                            bags.Add(childColor, new ColorBag() {Color = childColor});
+                            bags.Add(childColor, new ColoredBag() {Color = childColor});
 
                         var relation = new BagRelation()
                         {
@@ -48,32 +47,39 @@ namespace Advent_of_Code_2020.Day7
             return bags.Values;
         }
 
-        public static int CountParentBags(List<ColorBag> bags, string color, HashSet<ColorBag> knownBags = null)
+        private static int CountParentBags(ColoredBag coloredBag, ISet<ColoredBag> knownBags)
         {
-            knownBags ??= new HashSet<ColorBag>();
-
-            var colorBag = bags.First(bag => bag.Color == color);
-            foreach (var bag in colorBag.ParentBags.Select(relation => relation.Bag))
+            foreach (var bag in coloredBag.ParentBags.Select(relation => relation.Bag))
             {
                 knownBags.Add(bag);
-                CountParentBags(bags, bag.Color, knownBags);
+                CountParentBags(bag, knownBags);
             }
 
             return knownBags.Count;
         }
 
-        public static int CountAmountOfChildBags(List<ColorBag> bags, string color)
+        public static int CountParentBags(IEnumerable<ColoredBag> bags, string color)
+        {
+            return CountParentBags(bags.First(bag => bag.Color == color), new HashSet<ColoredBag>());
+        }
+
+        private static int CountAmountOfChildBags(ColoredBag bag)
         {
             var count = 0;
             
-            var colorBag = bags.First(bag => bag.Color == color);
-            foreach (var relation in colorBag.ChildBags)
+            foreach (var relation in bag.ChildBags)
             {
                 count += relation.Amount;
-                count += CountAmountOfChildBags(bags, relation.ChildBag.Color) * relation.Amount;
+                count += CountAmountOfChildBags(relation.ChildBag) * relation.Amount;
             }
 
             return count;
+        }
+        
+
+        public static int CountAmountOfChildBags(IEnumerable<ColoredBag> bags, string color)
+        {
+            return CountAmountOfChildBags(bags.First(bag => bag.Color == color));
         }
 
         public void SolveProblem1()
@@ -89,7 +95,7 @@ namespace Advent_of_Code_2020.Day7
         }
     }
 
-    public class ColorBag
+    public class ColoredBag
     {
         public string Color { get; set; }
         public List<BagRelation> ChildBags { get; } = new List<BagRelation>();
@@ -98,8 +104,8 @@ namespace Advent_of_Code_2020.Day7
 
     public class BagRelation
     {
-        public ColorBag Bag { get; set; }
-        public ColorBag ChildBag { get; set; }
+        public ColoredBag Bag { get; set; }
+        public ColoredBag ChildBag { get; set; }
         public int Amount { get; set; }
     }
 }
