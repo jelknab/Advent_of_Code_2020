@@ -44,10 +44,9 @@ namespace Advent_of_Code_2020.Day9
             {
                 var sum = numbers[i];
 
-                for (var j = i + 1; j < inputIndex; j++)
+                for (var j = i; j < inputIndex; sum += numbers[++j])
                 {
-                    if ((sum += numbers[j]) > input) break;
-
+                    if (sum > input) break;
                     if (sum == input)
                         return numbers.Where((val, index) => index >= i && index <= j).ToList();
                 }
