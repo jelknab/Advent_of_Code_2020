@@ -7,12 +7,8 @@ namespace Advent_of_Code_2020.Day9
 {
     public class Day9 : IDay
     {
-        public static long[] XMASParser(string file)
-        {
-            return new ResourceReader<long>(file)
-                .LineReader(long.Parse)
-                .ToArray();
-        }
+        public static long[] XmasParser(string file)
+        => new ResourceReader<long>(file).LineReader(long.Parse).ToArray();
 
         private static (int a, int b) FindPairThatSumsInput(long[] input, int preample, int index)
         {
@@ -50,14 +46,10 @@ namespace Advent_of_Code_2020.Day9
 
                 for (var j = i + 1; j < inputIndex; j++)
                 {
-                    sum += numbers[j];
-
-                    if (sum > input) break;
+                    if ((sum += numbers[j]) > input) break;
 
                     if (sum == input)
-                    {
                         return numbers.Where((val, index) => index >= i && index <= j).ToList();
-                    }
                 }
             }
 
@@ -66,14 +58,14 @@ namespace Advent_of_Code_2020.Day9
         
         public void SolveProblem1()
         {
-            var input = XMASParser("Advent_of_Code_2020.Day9.input.txt");
+            var input = XmasParser("Advent_of_Code_2020.Day9.input.txt");
 
             Console.WriteLine(FindWrongNumber(input, 25));
         }
 
         public void SolveProblem2()
         {
-            var input = XMASParser("Advent_of_Code_2020.Day9.input.txt");
+            var input = XmasParser("Advent_of_Code_2020.Day9.input.txt");
 
             var sumNumbers = FindSetOfNumbersThatSumInput(input, FindWrongNumber(input, 25));
             Console.WriteLine(sumNumbers.Min() + sumNumbers.Max());
