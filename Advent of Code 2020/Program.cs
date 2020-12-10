@@ -7,7 +7,7 @@ namespace Advent_of_Code_2020
         static void Main(string[] args)
         {
             var dayType = Type.GetType($"Advent_of_Code_2020.Day{DateTime.Today.Day}.Day{DateTime.Today.Day}")
-                    ?? throw new Exception("Please stick to naming scheme format."); 
+                    ?? throw new Exception($"No class found at: Advent_of_Code_2020.Day{DateTime.Today.Day}.Day{DateTime.Today.Day}"); 
             
             var day = (IDay) Activator.CreateInstance(dayType)
                       ?? throw new Exception("Could not make instance of today's challenge.");
