@@ -29,18 +29,16 @@ namespace Advent_of_Code_2020.Day17
         
         public void SolveProblem1()
         {
-            var cubeGrid = ParseCubeGrid("Advent_of_Code_2020.Day17.input.txt");
+            var cubeGrid3 = ParseCubeGrid("Advent_of_Code_2020.Day17.input.txt");
 
-            cubeGrid.RunSimulation(6);
+            cubeGrid3.RunSimulation(6);
 
-            Console.WriteLine(cubeGrid.GridItems.Count);
+            Console.WriteLine(cubeGrid3.GridItems.Count);
         }
 
         public void SolveProblem2()
         {
-            var cubeGrid = ParseCubeGrid("Advent_of_Code_2020.Day17.input.txt");
-            
-            var cubeGrid4 = new CubeGrid4(cubeGrid);
+            var cubeGrid4 = new CubeGrid4(ParseCubeGrid("Advent_of_Code_2020.Day17.input.txt"));
             cubeGrid4.RunSimulation(6);
             
             Console.WriteLine(cubeGrid4.GridItems.Count);
@@ -56,7 +54,7 @@ namespace Advent_of_Code_2020.Day17
     {
         public HashSet<(int x, int y, int z)> GridItems = new HashSet<(int x, int y, int z)>();
 
-        public IEnumerable<(int x, int y, int z, bool active)> EnumerateNeighbors((int x, int y, int z) org)
+        private IEnumerable<(int x, int y, int z, bool active)> EnumerateNeighbors((int x, int y, int z) org)
         {
             for (var x = org.x - 1; x <= org.x + 1; x++)
             for (var y = org.y - 1; y <= org.y + 1; y++)
@@ -65,15 +63,9 @@ namespace Advent_of_Code_2020.Day17
                     yield return (x, y, z, GridItems.Contains((x, y, z)));
         }
 
-        public void SetActive((int x, int y, int z) coordinate)
-        {
-            GridItems.Add(coordinate);
-        }
-        
-        public void SetInActive((int x, int y, int z) coordinate)
-        {
-            GridItems.Remove(coordinate);
-        }
+        public void SetActive((int x, int y, int z) coordinate) => GridItems.Add(coordinate);
+
+        public void SetInActive((int x, int y, int z) coordinate) => GridItems.Remove(coordinate);
 
         public void RunSimulation(int cycles)
         {
@@ -96,14 +88,10 @@ namespace Advent_of_Code_2020.Day17
                                 .Count(neighbour => neighbour.active) == 3
                         );
                     
-                    foreach (var (x, y, z, _) in inactiveNeighborsToActivate)
-                    {
-                        activations.Add((x, y, z));
-                    }
+                    foreach (var (x, y, z, _) in inactiveNeighborsToActivate) activations.Add((x, y, z));
                 }
 
                 foreach (var cube in activations) SetActive(cube);
-
                 foreach (var cube in deactivations)  SetInActive(cube);
             }
         }
@@ -113,15 +101,12 @@ namespace Advent_of_Code_2020.Day17
     {
         public CubeGrid4(CubeGrid3 cubeGrid3)
         {
-            foreach (var grid3Item in cubeGrid3.GridItems)
-            {
-                GridItems.Add((grid3Item.x, grid3Item.y, grid3Item.z, 0));
-            }
+            foreach (var (x, y, z) in cubeGrid3.GridItems) GridItems.Add((x, y, z, 0));
         }
         
         public HashSet<(int x, int y, int z, int w)> GridItems = new HashSet<(int x, int y, int z, int w)>();
 
-        public IEnumerable<(int x, int y, int z, int w, bool active)> EnumerateNeighbors((int x, int y, int z, int w) org)
+        private IEnumerable<(int x, int y, int z, int w, bool active)> EnumerateNeighbors((int x, int y, int z, int w) org)
         {
             for (var x = org.x - 1; x <= org.x + 1; x++)
             for (var y = org.y - 1; y <= org.y + 1; y++)
@@ -131,15 +116,10 @@ namespace Advent_of_Code_2020.Day17
                     yield return (x, y, z, w, GridItems.Contains((x, y, z, w)));
         }
 
-        public void SetActive((int x, int y, int z, int w) coordinate)
-        {
-            GridItems.Add(coordinate);
-        }
+        public void SetActive((int x, int y, int z, int w) coordinate) => GridItems.Add(coordinate);
         
-        public void SetInActive((int x, int y, int z, int w) coordinate)
-        {
-            GridItems.Remove(coordinate);
-        }
+        
+        public void SetInActive((int x, int y, int z, int w) coordinate) => GridItems.Remove(coordinate);
 
         public void RunSimulation(int cycles)
         {
@@ -162,14 +142,10 @@ namespace Advent_of_Code_2020.Day17
                                 .Count(neighbour => neighbour.active) == 3
                         );
                     
-                    foreach (var (x, y, z, w, _) in inactiveNeighborsToActivate)
-                    {
-                        activations.Add((x, y, z, w));
-                    }
+                    foreach (var (x, y, z, w, _) in inactiveNeighborsToActivate) activations.Add((x, y, z, w));
                 }
 
                 foreach (var cube in activations) SetActive(cube);
-
                 foreach (var cube in deactivations)  SetInActive(cube);
             }
         }
