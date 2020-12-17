@@ -15,6 +15,7 @@
       <EmbeddedResource Include="Day14\SampleInput2.txt" />
       <EmbeddedResource Include="Day16\SampleInput.txt" />
       <EmbeddedResource Include="Day16\SampleInput2.txt" />
+      <EmbeddedResource Include="Day17\SampleInput.txt" />
       <EmbeddedResource Include="Day3\SampleInput.txt" />
       <EmbeddedResource Include="Day6\SampleInput.txt" />
       <EmbeddedResource Include="Day7\SampleInput.txt" />
@@ -53,6 +54,8 @@
       <EmbeddedResource Include="Day14\input.txt" />
       <None Remove="Day16\input.txt" />
       <EmbeddedResource Include="Day16\input.txt" />
+      <None Remove="Day17\input.txt" />
+      <EmbeddedResource Include="Day17\input.txt" />
     </ItemGroup>
 
 </Project>
