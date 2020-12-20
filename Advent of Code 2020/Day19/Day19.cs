@@ -112,7 +112,7 @@ namespace Advent_of_Code_2020.Day19
                 var (matches, newIndex) = subRule.Matches(rules, input, index);
 
                 if (!matches)
-                    return (false, index);
+                    return (false, 0);
 
                 index = newIndex;
             }
@@ -150,7 +150,7 @@ namespace Advent_of_Code_2020.Day19
         {
             if (index == input.Length) return (false, 0);
             
-            return input[index] == Match ? (true, index + 1) : (false, index);
+            return input[index] == Match ? (true, index + 1) : (false, 0);
         }
     }
     

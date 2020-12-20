@@ -22,7 +22,7 @@ namespace Tests
             rules[8] = Day19.ParseRuleCollectionPiped("42 | 42 8");
             rules[11] = Day19.ParseRuleCollectionPiped("42 31 | 42 11 31");
 
-            rules[0].Matches(rules, "babbbbaabbbbbabbbbbbaabaaabaaa");
+            Assert.Equal(12, inputs.Count(input => rules[0].Matches(rules, input)));
         }
     }
 }
